@@ -1,0 +1,45 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+    <<div class="login-container">
+    <h1 class="login-title">Авторизация</h1>
+    <form action="" method="post" class="login-form">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-input", type="email", placeholder="Ваш email") }}
+            {% for error in form.email.errors %}
+                <p class="error-message">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-input", type="password", placeholder="Ваш пароль") }}
+            {% for error in form.password.errors %}
+                <p class="error-message">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </div>
+
+        <div class="remember-me">
+            {{ form.remember_me(class="remember-checkbox") }}
+            {{ form.remember_me.label(class="remember-label") }}
+        </div>
+
+        <div class="form-submit">
+            {{ form.submit(type="submit", class="submit-btn") }}
+        </div>
+
+        {% if message %}
+        <div class="server-message">
+            {{ message }}
+        </div>
+        {% endif %}
+    </form>
+</div>
+{% endblock %}

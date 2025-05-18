@@ -1,0 +1,65 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<head>
+    <title>Инструменты</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="sticker-container">
+            <div id="sticker"></div>
+        </div>
+        <script>
+            const anim = lottie.loadAnimation({
+                container: document.getElementById('sticker'),
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: "{{ url_for('static', filename='tools.json') }}"
+            });
+
+            anim.addEventListener('data_failed', () => {
+                console.error("Ошибка загрузки анимации!");
+            });
+
+            function calculateWater() {
+                const weight = document.getElementById('weight').value;
+                const result = weight * 35 / 1000; // Переводим мл в литры
+                document.getElementById('result').innerHTML = 'Норма воды: ' + result.toFixed(1) + ' л';
+            }
+        </script>
+
+        <div class="header">
+            <h1 class="main-title">Инструменты</h1>
+            <p class="subtitle">Прогрессируйте и становитесь лучше с инструментами от Life Line</p>
+        </div>
+        <p class="description">
+            {% if not current_user.is_authenticated %}
+                    Инструменты доступны только авторизованным пользователям,<br>
+                так что переходите в «Профиль» по кнопке ниже и проходите авторизацию, после чего возвращайтесь на эту страницу
+            {% else %}
+                    Выбирайте нужную функциональную карточку и становитесь лучше,<br>
+                приступайте к выбору
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Дневная норма воды</h5>
+                        <p class="card-text">Вводите данные и рассчитывайте свою дневную норму воды</p>
+                        <div class="input-group">
+                        <label for="weight">Ваш вес (кг):</label>
+                        <input type="number" id="weight" placeholder="Введите ваш вес">
+                        </div>
+                            <button class="btn" onclick="calculateWater()">Рассчитать</button>
+                        <div id="result"></div>
+                    </div>
+                </div>
+            {% endif %}
+        </p>
+        <div class="auth-buttons">
+            {% if not current_user.is_authenticated %}
+                <a href="{{ url_for('profile') }}">Перейти в «Профиль»</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+{% endblock %}

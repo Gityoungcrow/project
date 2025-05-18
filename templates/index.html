@@ -1,0 +1,49 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+<head>
+    <title>Главная</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="sticker-container">
+            <div id="sticker"></div>
+        </div>
+        <script>
+            const anim = lottie.loadAnimation({
+                container: document.getElementById('sticker'),
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: "{{ url_for('static', filename='hi.json') }}"
+            });
+
+            anim.addEventListener('data_failed', () => {
+                console.error("Ошибка загрузки анимации!");
+            });
+        </script>
+
+        <div class="header">
+            <h1 class="main-title">Добро пожаловать</h1>
+            <p class="subtitle">Life Line — это приложение, которое помогает вам совершенствоваться</p>
+        </div>
+        <p class="description">
+            {% if not current_user.is_authenticated %}
+                Переходите в «Профиль» по кнопке ниже,<br>
+            проходите авторизацию и получайте доступ ко всем функциям Life Line в разделе «Инструменты»
+            {% else %}
+                    Мы рады вашему возвращению,<br>
+                желаем снова насладиться всеми функциям Life Line в разделе «Инструменты»
+            {% endif %}
+        </p>
+        <div class="auth-buttons">
+            {% if not current_user.is_authenticated %}
+                <a href="{{ url_for('profile') }}">Перейти в «Профиль»</a>
+            {% else %}
+                <a href="/tools">Перейти в «Инструменты»</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+{% endblock %}
